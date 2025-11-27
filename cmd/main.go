@@ -9,9 +9,9 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/joho/godotenv"
 
-	"nfe-go/internal/handler"
-	"nfe-go/internal/repository"
-	"nfe-go/internal/service"
+	"github.com/AnyGridTech/frappe-nfe-bridge/internal/handler"
+	"github.com/AnyGridTech/frappe-nfe-bridge/internal/repository"
+	"github.com/AnyGridTech/frappe-nfe-bridge/internal/service"
 )
 
 func main() {
@@ -68,12 +68,12 @@ func main() {
 // --- Configuration Helper ---
 
 type Config struct {
-	Port         string
-	FrappeURL    string
-	FrappeKey    string
-	FrappeSecret string
-	NFeAPIKey    string
-	NFeCompanyID string
+	Port          string
+	FrappeURL     string
+	FrappeKey     string
+	FrappeSecret  string
+	NFeAPIKey     string
+	NFeCompanyID  string
 	CustomDoctype string
 }
 
@@ -90,12 +90,12 @@ func loadConfig() Config {
 	// In a real production app, consider using "github.com/spf13/viper"
 	// or "github.com/joho/godotenv" here.
 	cfg := Config{
-		Port:         get("PORT", "3000"),
-		FrappeURL:    os.Getenv("FRAPPE_URL"),
-		FrappeKey:    os.Getenv("FRAPPE_API_KEY"),
-		FrappeSecret: os.Getenv("FRAPPE_API_SECRET"),
-		NFeAPIKey:    os.Getenv("NFE_API_KEY"),
-		NFeCompanyID: os.Getenv("NFE_COMPANY_ID"),
+		Port:          get("PORT", "3000"),
+		FrappeURL:     os.Getenv("FRAPPE_URL"),
+		FrappeKey:     os.Getenv("FRAPPE_API_KEY"),
+		FrappeSecret:  os.Getenv("FRAPPE_API_SECRET"),
+		NFeAPIKey:     os.Getenv("NFE_API_KEY"),
+		NFeCompanyID:  os.Getenv("NFE_COMPANY_ID"),
 		CustomDoctype: os.Getenv("CUSTOM_DOCTYPE"),
 	}
 

@@ -1,4 +1,4 @@
-module nfe-go
+module github.com/AnyGridTech/frappe-nfe-bridge
 
 go 1.23.4
 
