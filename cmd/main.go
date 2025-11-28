@@ -28,7 +28,11 @@ func main() {
 		cfg.CustomDoctype, // exact name of your custom doctype
 	)
 
-	nfeRepo := repository.NewNFeRepo(cfg.NFeAPIKey)
+	nfeRepo := repository.NewNFeRepo(
+		cfg.NFeEndpoint,
+		cfg.NFeEndpointConsult,
+		cfg.NFeAPIKey,
+	)
 
 	// 3. Initialize Services
 	// We inject the NFe Company ID here as it's a business rule constant for the issuer
@@ -68,13 +72,15 @@ func main() {
 // --- Configuration Helper ---
 
 type Config struct {
-	Port          string
-	FrappeURL     string
-	FrappeKey     string
-	FrappeSecret  string
-	NFeAPIKey     string
-	NFeCompanyID  string
-	CustomDoctype string
+	Port               string
+	FrappeURL          string
+	FrappeKey          string
+	FrappeSecret       string
+	NFeAPIKey          string
+	NFeCompanyID       string
+	NFeEndpoint        string
+	NFeEndpointConsult string
+	CustomDoctype      string
 }
 
 func loadConfig() Config {
@@ -90,13 +96,15 @@ func loadConfig() Config {
 	// In a real production app, consider using "github.com/spf13/viper"
 	// or "github.com/joho/godotenv" here.
 	cfg := Config{
-		Port:          get("PORT", "3000"),
-		FrappeURL:     os.Getenv("FRAPPE_URL"),
-		FrappeKey:     os.Getenv("FRAPPE_API_KEY"),
-		FrappeSecret:  os.Getenv("FRAPPE_API_SECRET"),
-		NFeAPIKey:     os.Getenv("NFE_API_KEY"),
-		NFeCompanyID:  os.Getenv("NFE_COMPANY_ID"),
-		CustomDoctype: os.Getenv("CUSTOM_DOCTYPE"),
+		Port:               get("PORT", "3000"),
+		FrappeURL:          os.Getenv("FRAPPE_URL"),
+		FrappeKey:          os.Getenv("FRAPPE_API_KEY"),
+		FrappeSecret:       os.Getenv("FRAPPE_API_SECRET"),
+		NFeAPIKey:          os.Getenv("NFE_API_KEY"),
+		NFeCompanyID:       os.Getenv("NFE_COMPANY_ID"),
+		NFeEndpoint:        get("NFE_ENDPOINT", "https://api.nfe.io/v2"),
+		NFeEndpointConsult: get("NFE_ENDPOINT_CONSULT", "https://api.nfe.io/v2"),
+		CustomDoctype:      os.Getenv("CUSTOM_DOCTYPE"),
 	}
 
 	// Basic validation
