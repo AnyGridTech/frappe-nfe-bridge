@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/AnyGridTech/frappe-nfe-bridge/internal/models"
-	"github.com/AnyGridTech/frappe-nfe-bridge/internal/service"
+	"github.com/AnyGridTech/frappe-nfe-bridge/internal/service/frappe_invoice"
 )
 
 // Example: Using TaxService
