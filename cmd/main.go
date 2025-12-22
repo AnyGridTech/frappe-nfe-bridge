@@ -11,7 +11,8 @@ import (
 
 	"github.com/AnyGridTech/frappe-nfe-bridge/internal/handler"
 	"github.com/AnyGridTech/frappe-nfe-bridge/internal/repository"
-	"github.com/AnyGridTech/frappe-nfe-bridge/internal/service"
+	FrappeInvoiceService "github.com/AnyGridTech/frappe-nfe-bridge/internal/service/frappe_invoice"
+	NfeIoInvoiceService "github.com/AnyGridTech/frappe-nfe-bridge/internal/service/nfeio_invoice"
 )
 
 func main() {
@@ -36,10 +37,12 @@ func main() {
 
 	// 3. Initialize Services
 	// We inject the NFe Company ID here as it's a business rule constant for the issuer
-	issuerSvc := service.NewIssuerService(frappeRepo, nfeRepo, cfg.NFeCompanyID)
+	frappe_invoice_service := FrappeInvoiceService.NewIssuerService(frappeRepo, nfeRepo, cfg.NFeCompanyID)
+	nfeio_invoice_service := NfeIoInvoiceService.NewFrappeService()
 
 	// 4. Initialize Handlers
-	invoiceHandler := handler.NewInvoiceHandler(issuerSvc)
+	FrappeInvoice := handler.NewFrappeInvoiceHandler(frappe_invoice_service)
+	NfeIoInvoice := handler.NewNfeIoInvoiceHandler(nfeio_invoice_service)
 
 	// 5. Setup Fiber
 	app := fiber.New(fiber.Config{
@@ -55,7 +58,8 @@ func main() {
 	v1 := app.Group("/api/v1")
 
 	// Webhook endpoint that Frappe will call
-	v1.Post("/invoices/issue", invoiceHandler.HandleWebhook)
+	v1.Post("/webhook/invoices/issue", FrappeInvoice.CreateWebhook)
+	v1.Post("/webhook/nfeio/response", NfeIoInvoice.ProcessResponseWebhook)
 
 	// Health check (always good to have)
 	app.Get("/health", func(c *fiber.Ctx) error {

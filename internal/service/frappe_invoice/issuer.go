@@ -174,6 +174,8 @@ func (s *issuerService) mapFrappeToNFe(inv *models.Invoices, taxTemplate *models
 	// Determine operation type based on Frappe data
 	operationType := "outgoing"
 	if inv.OperationType != "" {
+		// Aqui tem que dar um erro caso o OperationType seja vazio ou invalido
+		// Somente outgoing & ongoing que sao validos.
 		// Map Frappe operation type to NFe.io format if needed
 		operationType = "outgoing"
 	}

@@ -1,22 +1,22 @@
 package handler
 
 import (
-	"github.com/AnyGridTech/frappe-nfe-bridge/internal/service"
+	"github.com/AnyGridTech/frappe-nfe-bridge/internal/service/frappe_invoice"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-type InvoiceHandler struct {
+type FrappeInvoiceHandler struct {
 	svc service.IssuerService
 }
 
-func NewInvoiceHandler(svc service.IssuerService) *InvoiceHandler {
-	return &InvoiceHandler{svc: svc}
+func NewFrappeInvoiceHandler(svc service.IssuerService) *FrappeInvoiceHandler {
+	return &FrappeInvoiceHandler{svc: svc}
 }
 
 // HandleWebhook triggers the issuance
-// POST /webhooks/frappe/invoice-submitted
-func (h *InvoiceHandler) HandleWebhook(c *fiber.Ctx) error {
+// POST /webhook/invoices/issue
+func (h *FrappeInvoiceHandler) CreateWebhook(c *fiber.Ctx) error {
 	// Frappe webhooks usually send the DocType data in the body
 	type WebhookPayload struct {
 		Name string `json:"name"` // The Invoice ID
